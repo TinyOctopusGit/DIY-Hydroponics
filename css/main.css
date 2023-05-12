@@ -1,0 +1,327 @@
+:root {
+    --white: #ffffff;
+    --light-gray:#f0f0f0;
+    --light-gray2:#cecece;
+    --green: #60ce80;
+    --blue: #154360;
+    --dark-gray: #1d1d27;
+}
+
+body{
+    background-color: var(--white);
+    font-family: monospace;
+    text-align: center;
+    justify-content: center;
+}
+
+title {
+  border-radius: 5px;
+}
+
+/* Button */
+button {
+  width: auto;
+	margin: auto;
+	justify-content: center;
+	display: block;
+  padding: 5px;
+	color: #fff;
+	background: var(--blue);
+	font-size: medium;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+  opacity: 1;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+    .cancelbtn, .deletebtn {
+        width: 100%;
+    }
+}
+
+/* Full Card */
+.fullCard {
+  background: var(--light-gray);
+  padding: 0.5%;
+  margin:auto;  
+  width: 90%;
+  overflow: hidden;
+  border-radius: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.closeFullCard {
+  margin-left: 30px;
+  color: var(--blue);
+  font-weight: bold;
+  float: right;
+  margin-right: 10px;
+  font-size: 150%;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closeFullCard:hover {
+  opacity: .8;
+}
+
+/* Colum Cards */
+.column {
+    background: var(--light-gray);
+    padding: 0.5%;
+    margin:0.5%;  
+    width: 200%;
+    overflow: hidden;
+    border-radius: 20px;
+}
+  
+.row {
+    display: -webkit-box;  
+    display: -webkit-flex;
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 580px) {
+	.column {
+		max-width: 100%;
+	}
+}
+@media (min-width: 760px) and (max-width: 2081px) {
+	.column {
+		max-width: 49%;
+	}
+}
+@media (min-width: 1500px) {
+	.column {
+        max-width: 49%;
+	}
+}
+
+
+/* Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 21px;
+    width: 21px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .slider {
+    background-color: var(--blue);
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px var(--light-gray);
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(15px);
+    -ms-transform: translateX(15px);
+    transform: translateX(15px);
+  }
+
+/* Scroll */
+.popupScroll {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  overflow: auto;
+}
+
+/* Pop Ups */
+.popup {
+  position: fixed;
+  width: 100%;
+  color: rgb(0, 0, 0);
+  height: 100vh;
+  background-color: var(--white);
+  z-index: 100;
+}
+
+.popupBox {
+  width: 350px;
+	height: 500px;
+	background: var(--blue);
+	overflow: hidden;
+  position: absolute;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+
+.popup .column {
+  transition: .5s;
+}
+
+.popup .column:hover {
+  cursor:pointer;
+  background-color: var(--light-gray2);
+}
+
+@media screen and (max-width: 600px) {
+  .popupBox {
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+  }
+}
+
+/* Forms */
+/* Group Form */
+.popup input[type=text], select, textarea {
+  width: 60%;
+	padding: 5px;
+  justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+  font-size: large;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+  border: solid var(--blue) 2px;
+}
+
+.popup input[type=submit] {
+  background-color: var(--blue);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.popup input[type=submit]:hover {
+  opacity: .8;
+}
+
+/* Accordian */
+.accordian {
+  background: white;
+  margin: auto;
+  margin-top: 40px;
+  width: 90%;
+}
+.accordian h1 {
+  font-family: var(--font-ibm-plex-sans);
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--color-title);
+  margin-bottom: 20px;
+}
+.accordian details {
+  display: flex;
+  border-radius: 5px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, .05);
+  border-left: 15px solid var(--blue);
+  padding: 5px;
+  margin-top: 15px;
+
+}
+.accordian details summary, .accordian details p {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  color: black;
+  padding: 10px;
+  cursor: pointer;
+}
+.accordian details summary::-webkit-details-marker, .accordian details p::-webkit-details-marker {
+  display: none;
+}
+.accordian details summary:focus, .accordian details p:focus {
+  outline: solid 3px var(--highlight);
+}
+.accordian details summary::selection, .accordian details p::selection {
+  background-color: var(--highlight);
+}
+.accordian details p {
+  cursor: default;
+  margin-left: 1px;
+  list-style-type: none;
+}
+.accordian details summary::before {
+  cursor: pointer;
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  left: 0rem;
+  margin-right: 0.5rem;
+}
+.accordian details[open] summary {
+  font-weight: 700;
+}
+.accordian details[open] summary::before {
+  transform: rotate(45deg);
+}
+
+@media screen and (max-width: 600px) {
+  .accordian {
+      width: 100%;
+      margin-top: 0px;
+  }
+}
+
+/* Dividers */
+hr.rounded {
+  border-top: 3px solid var(--blue);
+  border-radius: 5px;
+  width: 50%;
+  margin: auto;
+}
