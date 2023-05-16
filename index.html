@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hydroponics</title>
+
+    <!--Style Sheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/tabs.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script>
+      // Replace with your app config object
+      const firebaseConfig = {
+        apiKey: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        authDomain: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        databaseURL: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        projectId: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        storageBucket: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        messagingSenderId: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION",
+        appId: "REPLACE_WITH_YOUR_Firebase_CONFIGURATION"
+      };
+
+      // Initialize firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Make auth and database references
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+    </script>
+
+    <!-- include highchartsjs to build the charts-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- include to use jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- include Gauges Javascript library-->
+    <script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Tabs -->
+<menu class="menu">
+    <button class="menu__item active" style="--bgColorItem: var(--blue);" id="defaultOpen" onclick="openPage('Home')">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path  d="M4, 19 v-10 l8, -5 l8, 5 v10 h-16 M9, 19 v-7 h6 v7"/>
+        <path  d="M3, 7 l9, -5.5 l9, 5.5"/>
+      </svg>
+    </button>
+
+    <button class="menu__item" style="--bgColorItem: var(--blue);" onclick="openPage('Device')">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path  d="M8, 22 l-3, -4 v-8 h-2 v-4 q5 -4 10 0 v4 h-2 v8 l-3 4"/>
+        <path  d="M5, 10 h6 M4, 10 l4, -6 M5, 10 h6 M8, 10 l3, -5"/>
+        <path  d="M18, 14 v-6 C18,4 13,-3 8,4 "/>
+        <path  d="M14, 14 v8 h8 v-8 h-8"/>
+        <path  d="M14, 19 l2,-2 l3,3 l3,-3"/>
+      </svg>
+    </button>
+
+    <button class="menu__item" style="--bgColorItem: var(--blue);" onclick="openPage('Auto')">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path  d="M8, 20 v-3 l-3, -3 v-3"/>
+        <path  d="M12, 20 v-14"/>
+        <path  d="M16, 20 v-2 l3, -3 v-2"/>           
+        <circle cx="5" cy="9" r="2"/>
+        <circle cx="12" cy="4" r="2"/>
+        <circle cx="19" cy="11" r="2"/>
+      </svg>
+    </button>
+
+    <button class="menu__item" style="--bgColorItem: var(--blue);" onclick="openPage('Setting')"> 
+      <svg class="icon" viewBox="0 0 24 24" >
+        <path d="M 4 10 L 2 10 L 2 14 L 4 14 L 5 16 L 3 18 L 6 21 L 8 19 L 10 20 L 10 22 L 14 22 L 14 20 L 16 19 L 18 21 L 21 18 L 19 16 L 20 14 L 22 14 L 22 10 L 20 10 L 19 8 L 21 6 L 18 3 L 16 5 L 14 4 L 14 2 L 10 2 L 10 4 L 8 5 L 6 3 L 3 6 L 5 8 L 4 10 M 8 12 A 1 1 0 0 0 16 12 A 1 1 0 0 0 8 12"/>
+      </svg>
+    </button>
+
+    <div class="menu__border"></div>
+
+</menu>
+
+<div class="svg-container">
+  <svg viewBox="0 0 202.9 45.5" >
+    <clipPath id="menu" clipPathUnits="objectBoundingBox" transform="scale(0.0049285362247413 0.021978021978022)">
+      <path  d="M6.7,45.5c5.7,0.1,14.1-0.4,23.3-4c5.7-2.3,9.9-5,18.1-10.5c10.7-7.1,11.8-9.2,20.6-14.3c5-2.9,9.2-5.2,15.2-7
+        c7.1-2.1,13.3-2.3,17.6-2.1c4.2-0.2,10.5,0.1,17.6,2.1c6.1,1.8,10.2,4.1,15.2,7c8.8,5,9.9,7.1,20.6,14.3c8.3,5.5,12.4,8.2,18.1,10.5
+        c9.2,3.6,17.6,4.2,23.3,4H6.7z"/>
+    </clipPath>
+  </svg>
+</div>
+<!---->
+
+<!--Home tab -->
+<div id="Home" class="tabcontent">
+  <h2>Home</h2>
+  <h3>Overview of all systems</h3>
+  <button title="Add/Edit/Delete Groups" onclick="editHome()" style="position: absolute; right: 20px; top: 20px; background-color: rgba(255, 255, 255, 0); color: var(--blue); font-size: max(15px, 110%);"><i class="fa fa-pen"></i></button>
+  <div id="welcome" style="display: none;" class="fullCard">
+    <span class="closeFullCard" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <h3>Welcome</h3>
+    <p>This is a simple hydroponics app.</p>
+    <p>Everything is pretty self explainatory.</p>
+    <p>The home tab allows you to view groups of devices for ease of use. 
+    <p>The device tab is where you add, edit, or remove decives.</p> 
+    <p>The automation tab is where you create, edit, or remove automations for the devices.</p>
+    <p>The settings tab is where you can view and edit account, network, and other information.</p>
+    <p>Enjoy! Any bugs or questions can be posted on <a href="https://github.com/TinyOctopusGit/DIY-Hydroponics" target="_blank" style="color: black;">Github</a></p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+
+<div id="editHome" class="popup" style="display: none;">
+    <div class="popupScroll">
+      <h1>Edit Home</h1>
+      <h3>Create groups of devices to monitor them easier.</h3>
+      <button onclick="editHome()" style="position:absolute; right: 15px; top: 8px; background-color: rgba(255, 255, 255, 0); color: var(--dark-gray); font-size: max(15px, 220%);">&#10006;</button> 
+      <div class="row">
+
+        <div class="column" onclick="editHome(); addBed()">
+            <h3>Add A Garden Bed</h3>
+            <svg class="icon" viewBox="0 0 60 60" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+              <path d="M2 34 2 10 58 10 58 34ZM2 26 58 26M58 18 2 18M2 54 2 34 10 34 10 54 2 54M58 54 58 34 50 34 50 54Z"/>
+              <path style="stroke-width: 2px;" d="M11 10 11 4Q8 4 8 1 11 1 11 4M11 6Q11 3 14 3 14 6 11 6M29 10 29 6Q29 3 32 3 32 6 29 6M29 8Q29 5 26 5 26 8 29 8M49 10 49 4Q52 4 52 1 49 1 49 4M49 7Q49 4 46 4 46 7 49 7"/>
+            </svg>
+        </div>
+      
+        <div class="column" onclick="editHome(); addPot()">
+            <h3>Add A Pot</h3>
+            <svg class="icon" viewBox="0 0 50 60" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+              <path d="M12 58 41 58C47 58 49 45 49 23L3 23C3 45 5 58 12 58 M3 30 49 30"/>
+              <path style="stroke-width: 2px;" d="M26 23 26 12M25 21Q24 13 15 13 15 21 25 21M26 18Q26 8 37 8 37 18 26 18M26 12Q28 4 20 1 17 9 26 12"/>
+            </svg>
+        </div>
+        
+        <div class="column" onclick="editHome(); editGroup()">
+          <h3>Edit Group</h3>
+          <svg class="icon" viewBox="0 0 50 60" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+            <path d="M45 10Q50 15 45 20L35 10Q40 5 45 10M31 14 41 24 20 45 5 50 10 35ZM10 35 20 45"/>
+          </svg>
+        </div>
+
+        <div class="column" onclick="editHome(); deleteGroup()">
+          <h3>Delete Group</h3>
+          <svg class="icon" viewBox="0 0 50 60" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+            <path d="M 3 3 L 50 50 M 3 50 L 50 3"/>
+          </svg>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="addBed" class="popup" style="display: none;">
+  <h1>Add a Garden Bed</h1>
+  <button onclick="addBed()" style="position:absolute; right: 15px; top: 8px; background-color: rgba(255, 255, 255, 0); color: var(--dark-gray); font-size: max(15px, 220%);">&#10006;</button>
+    <form action="/action_page.php">
+      <input type="text" id="Gname" name="firstname" placeholder="Group Name">
+  
+      <input type="text" id="Descript" name="" placeholder="Descrition">
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+</div>
+
+<!-- Device Tab -->
+<div id="Device" class="tabcontent">
+  <h2>Devices</h2>
+  <p>Add, control, or remove decives</p>
+  <button title="Add/Delete Devices" onclick="addDevice()" style="position: absolute; right: 20px; top: 20px; background-color: rgba(255, 255, 255, 0); color: var(--blue); font-size: max(20px, 150%);"><i class="fa fa-plus"></i></button> 
+  
+  <div class="row">
+
+    <div class="column">
+        <h3>Device 1</h3>
+        <p><i class="fas fa-thermometer-half" style="color:#059e8a;"></i> TEMPERATURE</p>
+        <p><span class="reading"><span id="temp"></span> &deg;C</span></p>
+        <p><i class="fas fa-tint" style="color:#00add6;"></i> HUMIDITY</p>
+        <p><span class="reading"><span id="hum"></span> &percnt;</span></p>
+    </div>
+  
+    <div class="column">
+        <h3>Device 2</h3>
+
+    </div>
+    
+    <div class="column">
+        <h3>Device 3</h3>
+
+    </div>
+
+    <div class="column">
+      <h3>Device 3</h3>
+      <p>Some text</p>
+      <p>Some text</p>
+    </div>
+  </div>
+  <br><br><br><br>
+</div>
+
+<div id="addDevice" class="popup" style="display: none;">
+  <div class="popupScroll">
+    <h1>Add Device</h1>
+    <h3>Select Device below.</h3>
+    <button onclick="addDevice()" style="position:absolute; right: 15px; top: 8px; background-color: rgba(255, 255, 255, 0); color: var(--dark-gray); font-size: max(15px, 220%);">&#10006;</button> 
+    <div class="row">
+
+      <div class="column" onclick="addDevice(); addPump()">
+          <h3>ESP32 Pump with Temp and Moisture V1</h3>
+          <svg class="icon" viewBox="0 0 30 30" style="font-size: xx-large; stroke-width: 1.5pt; stroke: var(--blue)">
+            <path  d="M8, 22 l-3, -4 v-8 h-2 v-4 q5 -4 10 0 v4 h-2 v8 l-3 4"/>
+            <path  d="M5, 10 h6 M4, 10 l4, -6 M5, 10 h6 M8, 10 l3, -5"/>
+            <path  d="M18, 14 v-6 C18,4 13,-3 8,4 "/>
+            <path  d="M14, 14 v8 h8 v-8 h-8"/>
+            <path  d="M14, 19 l2,-2 l3,3 l3,-3"/>
+          </svg>
+      </div>
+    
+      <div class="column" onclick="addDevice(); addCam()">
+          <h3>ESP32 Plant Cam</h3>
+          <svg class="icon" viewBox="0 0 60 40" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+            <path style="stroke-width: 2px;" d="M35 20A1 1 0 0045 20 1 1 0 0035 20"/>
+            <path d="M5 10Q5 5 10 5L50 5Q55 5 55 10L55 30Q55 35 50 35L10 35Q5 35 5 30ZM30 20A1 1 0 0050 20 1 1 0 0030 20M10 10 10 30 25 30 25 10ZM10 20 15 25 20 15 25 20"/>
+          </svg>
+      </div>
+
+      <div class="column" onclick="addDevice(); addLight()">
+        <h3>ESP32 Plant Light</h3>
+        <svg class="icon" viewBox="0 0 60 40" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+          <path d="M15 10 5 20 55 20 45 10ZM35 10 35 5M25 10 25 5M20 20A1 1 0 0040 20M15 25 5 30M20 30 15 40M30 35 30 45M40 30 45 40M45 25 55 30"/>
+        </svg>
+      </div>
+
+      <div class="column" onclick="addDevice(); deleteDevice()">
+        <h3>Delete Device</h3>
+        <svg class="icon" viewBox="0 0 50 60" style="font-size: xx-large; stroke-width: 3pt; stroke: var(--blue)">
+          <path d="M 3 3 L 50 50 M 3 50 L 50 3"/>
+        </svg>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+
+<div id="addPump" class="popup" style="display: none;">
+  <h1>Name New Device</h1>
+  <button onclick="addPump()" style="position:absolute; right: 15px; top: 8px; background-color: rgba(255, 255, 255, 0); color: var(--dark-gray); font-size: max(15px, 220%);">&#10006;</button>
+    <form action="/action_page.php">
+      <input type="text" id="Dname" name="Dname" placeholder="Device Name">
+      <select>
+
+        <option value=""hidden>Add to Group (Optional)</option>
+    
+        <!-- normal options -->
+        <option value="1">Group 1</option>
+        <option value="2">Group 2</option>
+      </select>
+    
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+</div>
+
+<!-- Automations Tab -->
+<div id="Auto" class="tabcontent">
+  <h2>Automations</h2>
+  <p>Create, manage, or delete automations</p>
+  <button title="Add/Edit/Delete Automation" style="position: absolute; right: 20px; top: 20px; background-color: rgba(255, 255, 255, 0); color: var(--blue); font-size: max(20px, 150%);"><i class="fa fa-plus"></i></button> 
+
+  <div class="accordian">
+    
+    <details>
+      <summary>Automation Name</summary>
+      <p>Some text to be hidden.</p> 
+      <p>Some text to be hidden.</p> 
+      <p>Some text to be hidden.</p> 
+    </details>
+    
+    <details>
+      <summary>Automation Name</summary>
+      <p>Some text to be hidden. Super looooong text</p> 
+      <p>Some text to be hidden.</p> 
+      <p>Some text to be hidden.</p> 
+      <p>Some text to be hidden.</p> 
+    </details>
+  </div>
+  <br><br><br><br>
+
+</div>
+
+<!-- Settings Tab -->
+<div id="Setting" class="tabcontent">
+  <h2>Settings</h2>
+
+  <h3>Notifications</h3>
+  <hr class="rounded">
+  <p style="display: inline-block;">Recive Notifications:</p>
+  <label class="switch">
+    <input type="checkbox" id="toggleNoti" onclick="toggleNoti()">
+    <span class="slider"></span>
+  </label>
+
+  <h3>Account</h3>
+  <hr class="rounded">
+  <p>Email:</p>
+  <button style="font-size: large">Sign Out</button>
+  <button style="background-color: white; color: var(--blue)">Change Password</button>
+
+  <h3>Help</h3>
+  <hr class="rounded">
+  <p>Bugs should be reported to <a href="https://github.com/TinyOctopusGit/DIY-Hydroponics" target="_blank" style="color: black;">Github</a></p>
+  <p>Questions can be emailed to <a href="" target="_blank" style="color: black;">Support</a></p>
+  
+  <br><br><br><br>
+</div>
+
+<!--LOGIN FORM-->
+<!-- <form id="login-form" style="display: none;" class="login">
+    <label for="input-email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Username" id="input-email" required>
+    <br>
+    <label for="input-password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="input-password" required>
+    <br>
+    <button type="submit" id="login-button">Login</button>
+    <p id="error-message" style="color:red;"></p>
+</form> -->
+
+<!-- Login -->
+<div class="mainlogin"  style="display: none;">
+<div class="loginbox">  	
+  <input type="checkbox" id="chk" aria-hidden="true">
+    <div class="login">
+      <form id="loginform">
+        <label for="chk" aria-hidden="true">Login</label>
+        <input type="text" placeholder="Email" id="input-email" required>
+        <input type="password" placeholder="Password" id="input-password" required>
+        <button type="submit" id="login-button">Login</button>
+      </form>
+    </div>
+
+    <div class="signup">
+      <form>
+        <label for="chk" aria-hidden="true">Sign up</label>
+        <input type="email" name="email" placeholder="Email" required="">
+        <input type="password" id="password" name="pswd" placeholder="Password" required="">
+        <input type="password" id="confirm-password" name="confirmpswd" placeholder="Confirm Password" required="">
+        <button type="submit" id="signup-button">Sign Up</button>
+      </form>
+    </div>
+</div>
+</div>
+<!--  -->
+
+<!--INCLUDE JS FILES-->
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/tabs.js"></script>
+  <script src="scripts/charts-definition.js"></script>
+  <script src="scripts/gauges-definition.js"></script>
+  <script src="scripts/index.js"></script>
+  <script src="scripts/notifications.js"></script>
+</body>
+
+</html>
